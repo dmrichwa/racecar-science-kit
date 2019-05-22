@@ -81,7 +81,7 @@ const float DISKSLOTS = 20.0;  // number of slots in encoder disk
 // wheel sizes
 // NB: Slightly smaller than actual sizes because they get squished from the weight of the car
 const float WHEEL1 = 65.0;  // small wheels, blue
-const float WHEEL2 = 84.0;  // medium wheels, yellow
+const float WHEEL2 = 85.0;  // medium wheels, yellow
 const float WHEEL3 = 94.0;  // big wheels, red
 
 volatile float currentWheel = 0;  // size of wheel on car
