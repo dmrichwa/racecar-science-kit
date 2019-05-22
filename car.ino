@@ -5,7 +5,7 @@
 /** Config **/
 const int rs = 6, en = 5, d4 = 4, d5 = 3, d6 = 2, d7 = 1; // Pins for LCD screen
 const int refreshRate = 250; // How many milliseconds between refreshing LCD screen
-const int screenRate = 4; // How long (in units of refresh rate) between scrolling through the screens
+const int screenRate = 8; // How long (in units of refresh rate) between scrolling through the screens
 const int screens = 2; // How many screens there are
 /** Config **/
 
@@ -111,8 +111,7 @@ void ISR_BUTTON_RESTART() {
     digitalWrite(LED2, LOW);
     digitalWrite(LED3, LOW);
   }
-  else if (state != READY) {
-  //else if (state == STOPPED) {  // reset car
+  else if (state != READY) {  // reset car
     state = RESET;  // change state to reset
     counter = 0;  // reset measurements
     last_counter_update = 0;
@@ -194,10 +193,10 @@ void loop() {
   }
   switch (state) {
     case RESET:
-      /*if (state == RESET)*/ digitalWrite(LED1, blink_on);  // sometimes the LEDs get stuck if you hit the wheel size button right as this triggers
-      // note that this is still not atomic, and if the interrupt fires between the if and write, the LED will be incorrect
-      /*if (state == RESET)*/ digitalWrite(LED2, blink_on);
-      /*if (state == RESET)*/ digitalWrite(LED3, blink_on);
+      digitalWrite(LED1, blink_on);  // sometimes the LEDs get stuck if you hit the wheel size button right as this triggers
+      // fixed by forcing them off in the next state
+      digitalWrite(LED2, blink_on);
+      digitalWrite(LED3, blink_on);
       digitalWrite(RESET_LED, LOW);  // this LED should never be on in the reset state -- fixes race condition from resetting the button
       break;
     case WAITING:
@@ -261,16 +260,14 @@ void loop() {
   }
   
   if (state == READY && countdown_led >= 4) {  // ready to launch state
-    //if ((millis() - start_time) >= 2000) {  // delay 2 seconds to give time for launching
-      start_time = millis();  // update start time
-      state = RECORDING;  // move to car moving state
-      screen = 1;  // reset screens to first
-      screenCounter = 0;
-      digitalWrite(RESET_LED, HIGH);
-      digitalWrite(LED1, LOW);  // turn off wheel size LEDs
-      digitalWrite(LED2, LOW);
-      digitalWrite(LED3, LOW);
-    //}
+    start_time = millis();  // update start time
+    state = RECORDING;  // move to car moving state
+    screen = 1;  // reset screens to first
+    screenCounter = 0;
+    digitalWrite(RESET_LED, HIGH);
+    digitalWrite(LED1, LOW);  // turn off wheel size LEDs
+    digitalWrite(LED2, LOW);
+    digitalWrite(LED3, LOW);
   }
 
   if (state == RECORDING) {  // car moving state
