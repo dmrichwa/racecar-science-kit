@@ -70,7 +70,7 @@ prog_state state = RESET;
 
 volatile float counter = 0;  // encoder counter
 volatile float last_counter_update;  // time that the encoder was last updated (used to check when car stops moving)
-const float counter_threshold = 500.0;  // time that the encoder has to not update for the car to be considered stopped
+const float counter_threshold = 100.0;  // time that the encoder has to not update for the car to be considered stopped
 const float minimum_counter = 20.0;  // the minimum amount of counter ticks for the car to be considered stopped (prevents issues with launcher)
 
 volatile float timer = 0.0;  // elapsed time of current run
